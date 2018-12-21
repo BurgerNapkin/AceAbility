@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="mainBackground">#cfe6634b</color>
+    <color name="buttonColor">#a1f7ac</color>
+    <color name="toastBackground">#5c5b5b</color>
+    <color name="toastTextColor">#dccccc</color>
+</resources>

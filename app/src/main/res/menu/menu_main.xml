@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.somedomain.aceability.MainActivity">
+    <item
+        android:id="@+id/action_start"
+        android:orderInCategory="100"
+        android:title="スタート"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_give_up"
+        android:orderInCategory="101"
+        android:title="俺には無理"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_game_info"
+        android:orderInCategory="102"
+        android:title="ゲームの説明"
+        app:showAsAction="never" />
+
+</menu>
+
+
+<!--<item-->
+<!--android:id="@+id/difficulty_change"-->
+<!--android:orderInCategory="102"-->
+<!--android:title="難しさ変えよう！"-->
+<!--app:showAsAction="never" />-->
