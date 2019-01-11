@@ -1,6 +1,7 @@
 package com.somedomain.aceability;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ShapeDrawable;
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     int startNum = 1, endNum = 5, numOfNum=4, numOfBoxes=6, toolbarHeight; // constants for game play
     int mintRightPandN, mintRightNum, mintRightPos, mintMissCount;
     boolean isStartUp = true;
-//    EditText etIndex0,etIndex1,etIndex2,etIndex3,etIndex4,etIndex5;
     List<EditText> maxBoxes, inputBoxes;
     TextView tvRightPandN, tvRightNum, tvRightPos, tvMissCounter, tvYouWIN, tvFinalAnswer, tvTimePassed;
     Button mButtonTryYourLuck;
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         uiHandler = new MyWeakHandler(this);
-
 
         View ll = getLayoutInflater().inflate(R.layout.linearlayout_for_toolbar, null);
         Toolbar.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -215,16 +214,23 @@ public class MainActivity extends AppCompatActivity {
 
         for (EditText et : maxBoxes) {
             et.setFilters(filters);
+
+            et.setBackground(Util.makeSquare(et.getWidth(),et.getHeight(),getResources().getDisplayMetrics()));
         }
         inputBoxes = new ArrayList<>();
 
-
-        //etIndex0 = findViewById(R.id.editText_index0);
     }
 
     void startGame() {
+        //hide unused EditText
+        if (numOfBoxes!=12) {
+            for (int i = 11; i >= numOfBoxes; i--) {
+                maxBoxes.get(i).setVisibility(View.INVISIBLE);
+            }
+        }
         inputBoxes = maxBoxes.subList(0, numOfBoxes);
         playerGuess = new Integer[numOfBoxes];
+
 
         mSpinnerBoxes.setEnabled(false);
         mSpinnerNumMax.setEnabled(false);
@@ -239,6 +245,8 @@ public class MainActivity extends AppCompatActivity {
         tvRightNum.setText("");
         tvRightPandN.setText("");
         tvMissCounter.setText("");
+        mintMissCount = 0;
+        tvMissCounter.setText(String.valueOf(mintMissCount));
         currentCode = generateHiddenCode();
         String finalAnswer ="";
         for (int i = 0; i < currentCode.length; i++) {
@@ -259,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
         for (EditText et : maxBoxes) {
             //et.setText("");
             et.setEnabled(false);
+            et.setVisibility(View.VISIBLE);
         }
         mSpinnerNumMax.setEnabled(true);
         mSpinnerBoxes.setEnabled(true);
@@ -373,7 +382,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static final DateFormat sdf = new SimpleDateFormat("mm:ss");
-    //static final DateFormat sdfTest = new SimpleDateFormat("yyyy-MM-dd");
 
     void startTimer() {
         mTimer = new Timer();
@@ -400,42 +408,40 @@ public class MainActivity extends AppCompatActivity {
 //                uiHandler.sendMessage(msg);
 
 
-
                 Calendar c = null;
                 if (startCalendar == null) {
                     startCalendar = Calendar.getInstance();
                 } else {
                     c = Calendar.getInstance();
                 }
-
-                //DateFormat sdf = new SimpleDateFormat("mm:ss");
-
                 Message msg = uiHandler.obtainMessage();
                 msg.what = TIME_CODE;
                 Bundle b = new Bundle();
 
                 if (c != null) {
                     long difference = c.getTimeInMillis() - startCalendar.getTimeInMillis();
-                    //  all of these work but and seem to be equally accurate except for 1, no need to create new calendar,
+                    //  all of these work but and seem to be equally accurate except for 2, no need to create new calendar,
                     //  3, similar to 1 calendar method but probably more accurate
                     //  also this can be done with 1 calendar
+
+                    //1
+                    c.setTimeInMillis(difference);
+                    String s = sdf.format(c.getTime());
+                    b.putString("time", s);
+
+                    //2
 //                    Calendar seconds = Calendar.getInstance();
 //                    seconds.setTimeInMillis(difference);
 //                    String s = sdf.format(seconds.getTime());
 //                    b.putString("time", s);
 
 
-                    c.setTimeInMillis(difference);
-                    String s = sdf.format(c.getTime());
-                    b.putString("time", s);
-
+                    //3
 //                    c.clear();
 //                    c.set(Calendar.SECOND, Math.round(difference/1000));
 //                    String s = sdf.format(c.getTime());
 //                    b.putString("time", s);
 
-                    Log.d("TIMETEST", s );
-                    //Log.d("TIMETEST", sdfTest.format(c.getTime()) );  // wanted to know if reset time to 1970, it does
                 } else {
                     b.putString("time", "00:00");
                 }
@@ -468,9 +474,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-//        Handler getHandler(MainActivity activity) {
-//            return new MyWeakHandler(activity);
-//        }
     }
 
     Toast bread;
